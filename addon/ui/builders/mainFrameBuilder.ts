@@ -1,5 +1,6 @@
 // Main frame creation for Outfit Designer
 import { closeSavedOutfitsSection } from "../uiUpdates";
+import { closeExportPopup } from "./exportPopupBuilder";
 
 export function createMainFrame(): WoWAPI.Frame {
     const frame = CreateFrame('Frame', 'OutfitDesignerFrame', UIParent);
@@ -28,9 +29,10 @@ export function createMainFrame(): WoWAPI.Frame {
         frame.Hide();
     });
 
-    // Close saved outfits section when main frame is hidden
+    // Close saved outfits section and export popup when main frame is hidden
     frame.SetScript('OnHide', () => {
         closeSavedOutfitsSection();
+        closeExportPopup();
     });
 
     return frame;

@@ -21,4 +21,6 @@ export * from './messages/LoadOutfitMessage';
 export * from './messages/DeleteOutfitMessage';
 export * from './messages/ExportOutfitMessage';
 export * from './messages/ExportedCodeMessage';
+export * from './messages/SaveOutfitToDBMessage';
+export * from './messages/ExportOutfitByIdMessage';
 

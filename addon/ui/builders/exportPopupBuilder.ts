@@ -1,11 +1,22 @@
 // Export popup UI builder
+import { getSavedOutfitsContainer } from "../uiReferences";
+
 let exportPopupRef: WoWAPI.Frame | null = null;
 let exportEditBoxRef: WoWAPI.EditBox | null = null;
 
 export function createExportPopup(): WoWAPI.Frame {
     const popup = CreateFrame('Frame', 'OutfitDesignerExportPopup', UIParent);
     popup.SetSize(300, 500);
-    popup.SetPoint('CENTER', UIParent, 'CENTER', 0, 0);
+    
+    // Position underneath the Browse Saved Outfits container
+    const savedOutfitsContainer = getSavedOutfitsContainer();
+    if (savedOutfitsContainer) {
+        popup.SetPoint('TOP', savedOutfitsContainer, 'BOTTOM', 0, -10);
+    } else {
+        // Fallback to center if container not found
+        popup.SetPoint('CENTER', UIParent, 'CENTER', 0, 0);
+    }
+    
     popup.SetMovable(true);
     popup.EnableMouse(true);
     popup.RegisterForDrag('LeftButton');
@@ -34,7 +45,7 @@ export function createExportPopup(): WoWAPI.Frame {
     // Scroll frame for code
     const scrollFrame = CreateFrame('ScrollFrame', 'OutfitDesignerExportScrollFrame', popup, 'UIPanelScrollFrameTemplate');
     scrollFrame.SetSize(270, 380);
-    scrollFrame.SetPoint('TOP', popup, 'TOP', -5, -40);
+    scrollFrame.SetPoint('TOP', popup, 'TOP', -10, -40);
 
     const scrollBg = scrollFrame.CreateTexture(undefined, 'BACKGROUND');
     scrollBg.SetAllPoints(scrollFrame);
@@ -75,6 +86,12 @@ export function showExportPopup(code: string) {
         exportPopupRef.Show();
     } else {
         print('Export popup not initialized!');
+    }
+}
+
+export function closeExportPopup() {
+    if (exportPopupRef) {
+        exportPopupRef.Hide();
     }
 }
 

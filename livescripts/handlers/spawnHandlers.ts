@@ -13,7 +13,7 @@ export function registerSpawnHandlers(events: TSEvents): void {
         msg.read(packet);
 
         // Get the preview creature entry from datascripts
-        const creatureIds = TAG('unit-creator', 'outfit-preview-creature');
+        const creatureIds = TAG('outfit-designer', 'outfit-preview-creature');
         const creatureEntry = creatureIds[0];
 
         // Spawn in front of the player, facing back towards the player
@@ -113,7 +113,7 @@ export function registerSpawnHandlers(events: TSEvents): void {
         }
 
         // Check if it's an outfit preview creature
-        const creatureIds = TAG('unit-creator', 'outfit-preview-creature');
+        const creatureIds = TAG('outfit-designer', 'outfit-preview-creature');
         const targetCreatureEntry = creatureIds[0];
 
         if (creature.GetEntry() !== targetCreatureEntry) {

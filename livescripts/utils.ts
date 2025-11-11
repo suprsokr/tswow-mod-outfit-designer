@@ -149,7 +149,7 @@ export function verifyOutfitPreviewCreature(player: TSPlayer): TSCreature | null
     }
 
     // Check if it's an outfit preview creature
-    const creatureIds = TAG('unit-creator', 'outfit-preview-creature');
+    const creatureIds = TAG('outfit-designer', 'outfit-preview-creature');
     const targetCreatureEntry = creatureIds[0];
     
     if (creature.GetEntry() !== targetCreatureEntry) {

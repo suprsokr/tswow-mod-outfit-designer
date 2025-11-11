@@ -1,12 +1,12 @@
 // Saved outfits UI builder (collapsible section)
-import { SaveOutfitMessage, ExportOutfitMessage } from "../../../shared/Messages";
+import { SaveOutfitMessage } from "../../../shared/Messages";
 import { setSavedOutfitsToggleBtn, setSavedOutfitsContainer, setSavedOutfitsScrollFrame } from "../uiReferences";
 import { toggleSavedOutfitsSection } from "../uiUpdates";
 
 export function createSavedOutfitsUI(parent: WoWAPI.Frame, startY: number): number {
     let yOffset = startY;
 
-    // 3-column button structure
+    // 2-column button structure
     const buttonWidth = 155;
     const buttonSpacing = 5;
 
@@ -36,27 +36,12 @@ export function createSavedOutfitsUI(parent: WoWAPI.Frame, startY: number): numb
         }
     });
 
-    // Export button (column 3)
-    const exportBtn = CreateFrame('Button', 'OutfitDesignerExportOutfit', parent, 'UIPanelButtonTemplate');
-    exportBtn.SetSize(buttonWidth, 25);
-    exportBtn.SetPoint('LEFT', saveBtn, 'RIGHT', buttonSpacing, 0);
-    exportBtn.SetText('Export');
-    exportBtn.SetScript('OnClick', () => {
-        const targetGUID = UnitGUID('target');
-        if (targetGUID && targetGUID !== '') {
-            const packet = new ExportOutfitMessage();
-            packet.write().Send();
-        } else {
-            print('No target selected! Target a creature first.');
-        }
-    });
-
     yOffset -= 30;
 
     // Collapsible container - positioned to LEFT of main frame, sized for ~5 entries
     const container = CreateFrame('Frame', undefined, UIParent);
     const containerHeight = 200; // Tall enough for ~5 entries
-    container.SetSize(550, containerHeight);
+    container.SetSize(580, containerHeight); // Width for 4 action buttons
     container.SetPoint('TOPRIGHT', parent, 'TOPLEFT', -10, 0); // Same Y as main frame
     container.Hide();
     setSavedOutfitsContainer(container);
@@ -81,13 +66,13 @@ export function createSavedOutfitsUI(parent: WoWAPI.Frame, startY: number): numb
     headerIdText.SetPoint('TOPLEFT', container, 'TOPLEFT', 15, containerYOffset);
     headerIdText.SetText('ID');
     headerIdText.SetJustifyH('LEFT');
-    headerIdText.SetWidth(50);
+    headerIdText.SetWidth(80);
 
     const headerRaceText = container.CreateFontString(undefined, 'OVERLAY', 'GameFontNormalSmall');
-    headerRaceText.SetPoint('TOPLEFT', container, 'TOPLEFT', 70, containerYOffset);
+    headerRaceText.SetPoint('TOPLEFT', container, 'TOPLEFT', 100, containerYOffset);
     headerRaceText.SetText('Race');
     headerRaceText.SetJustifyH('LEFT');
-    headerRaceText.SetWidth(100);
+    headerRaceText.SetWidth(70);
 
     const headerGenderText = container.CreateFontString(undefined, 'OVERLAY', 'GameFontNormalSmall');
     headerGenderText.SetPoint('TOPLEFT', container, 'TOPLEFT', 175, containerYOffset);
@@ -102,17 +87,17 @@ export function createSavedOutfitsUI(parent: WoWAPI.Frame, startY: number): numb
     headerSavedToDBText.SetWidth(80);
 
     const headerActionsText = container.CreateFontString(undefined, 'OVERLAY', 'GameFontNormalSmall');
-    headerActionsText.SetPoint('TOPLEFT', container, 'TOPLEFT', 335, containerYOffset);
+    headerActionsText.SetPoint('TOPLEFT', container, 'TOPLEFT', 330, containerYOffset);
     headerActionsText.SetText('Actions');
     headerActionsText.SetJustifyH('LEFT');
-    headerActionsText.SetWidth(200);
+    headerActionsText.SetWidth(220);
 
     containerYOffset -= 25;
 
     // Scroll frame - smaller to fit ~5 entries
     const scrollFrame = CreateFrame('ScrollFrame', 'OutfitDesignerSavedOutfitsScroll', container, 'UIPanelScrollFrameTemplate');
     const scrollHeight = containerHeight - 70; // Leave room for title and headers
-    scrollFrame.SetSize(510, scrollHeight); // Reduced width to accommodate scrollbar inside
+    scrollFrame.SetSize(540, scrollHeight); // Width to accommodate scrollbar and action buttons
     scrollFrame.SetPoint('TOPLEFT', container, 'TOPLEFT', 10, containerYOffset);
     
     const scrollBg = scrollFrame.CreateTexture(undefined, 'BACKGROUND');
@@ -121,7 +106,7 @@ export function createSavedOutfitsUI(parent: WoWAPI.Frame, startY: number): numb
 
     // Scroll child
     const scrollChild = CreateFrame('Frame', 'OutfitDesignerSavedOutfitsScrollChild', scrollFrame);
-    scrollChild.SetSize(490, scrollHeight); // Narrower to account for scrollbar
+    scrollChild.SetSize(520, scrollHeight); // Width accounting for scrollbar
     scrollFrame.SetScrollChild(scrollChild);
 
     // Store references

@@ -26,11 +26,11 @@ outfit.Back.set(0);
 outfit.Tabard.set(0);
 
 const previewCreature = std.CreatureTemplates
-    .create('unit-creator', 'outfit-preview-dummy', 6)
+    .create('outfit-designer', 'outfit-preview-dummy', 6)
     .Name.enGB.set('Outfit Preview Dummy')
     .FactionTemplate.set(35)
     .UnitFlags.NON_ATTACKABLE.set(1)
-    .Tags.add('unit-creator', 'outfit-preview-creature');
+    .Tags.add('outfit-designer', 'outfit-preview-creature');
 
 previewCreature.Models.clearAll();
 previewCreature.Models.addIds(outfit.ID);

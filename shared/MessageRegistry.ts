@@ -28,6 +28,8 @@ export class MessageRegistry {
     static readonly DELETE_OUTFIT_MESSAGE_ID = MessageRegistry.register();            // 917
     static readonly EXPORT_OUTFIT_MESSAGE_ID = MessageRegistry.register();            // 918
     static readonly EXPORTED_CODE_MESSAGE_ID = MessageRegistry.register();            // 919
+    static readonly SAVE_OUTFIT_TO_DB_MESSAGE_ID = MessageRegistry.register();        // 920
+    static readonly EXPORT_OUTFIT_BY_ID_MESSAGE_ID = MessageRegistry.register();      // 921
 
     private static register(): number {
         return MessageRegistry.currentId++;
@@ -57,6 +59,8 @@ export class MessageRegistry {
             DELETE_OUTFIT_MESSAGE_ID: MessageRegistry.DELETE_OUTFIT_MESSAGE_ID,
             EXPORT_OUTFIT_MESSAGE_ID: MessageRegistry.EXPORT_OUTFIT_MESSAGE_ID,
             EXPORTED_CODE_MESSAGE_ID: MessageRegistry.EXPORTED_CODE_MESSAGE_ID,
+            SAVE_OUTFIT_TO_DB_MESSAGE_ID: MessageRegistry.SAVE_OUTFIT_TO_DB_MESSAGE_ID,
+            EXPORT_OUTFIT_BY_ID_MESSAGE_ID: MessageRegistry.EXPORT_OUTFIT_BY_ID_MESSAGE_ID,
         };
     }
 

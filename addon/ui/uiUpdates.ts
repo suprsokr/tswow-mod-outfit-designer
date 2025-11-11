@@ -18,7 +18,7 @@ import {
     getFacialHairText
 } from "./uiReferences";
 import { getRaceName } from "../utils/constants";
-import { UnequipItemMessage, EquipItemMessage, LoadOutfitMessage, DeleteOutfitMessage, LoadOutfitListMessage, SaveOutfitMessage } from "../../shared/Messages";
+import { UnequipItemMessage, EquipItemMessage, LoadOutfitMessage, DeleteOutfitMessage, LoadOutfitListMessage, SaveOutfitMessage, SaveOutfitToDBMessage, ExportOutfitByIdMessage } from "../../shared/Messages";
 import { getSavedOutfits, getSavedOutfitsVisible, setSavedOutfitsVisible } from "../state/addonState";
 import { getSavedOutfitsScrollChild, getSavedOutfitsRows, clearSavedOutfitsRows, addSavedOutfitsRow, getSavedOutfitsContainer, getSavedOutfitsToggleBtn } from "./uiReferences";
 
@@ -219,7 +219,7 @@ export function displaySavedOutfits() {
     if (outfits.length === 0) {
         // Show "No saved outfits" message
         const noOutfitsFrame = CreateFrame('Frame', undefined, savedOutfitsScrollChild);
-        noOutfitsFrame.SetSize(510, 20);
+        noOutfitsFrame.SetSize(520, 20);
         noOutfitsFrame.SetPoint('TOPLEFT', savedOutfitsScrollChild, 'TOPLEFT', 0, yPos);
         
         const noOutfitsText = noOutfitsFrame.CreateFontString(undefined, 'OVERLAY', 'GameFontNormal');
@@ -235,7 +235,7 @@ export function displaySavedOutfits() {
         
         // Create row frame
         const row = CreateFrame('Frame', undefined, savedOutfitsScrollChild);
-        row.SetSize(510, rowHeight);
+        row.SetSize(520, rowHeight);
         row.SetPoint('TOPLEFT', savedOutfitsScrollChild, 'TOPLEFT', 0, yPos);
 
         // ID (column 1)
@@ -243,14 +243,14 @@ export function displaySavedOutfits() {
         idText.SetPoint('LEFT', row, 'LEFT', 5, 0);
         idText.SetText(outfit.id.toString());
         idText.SetJustifyH('LEFT');
-        idText.SetWidth(50);
+        idText.SetWidth(80);
 
         // Race (column 2)
         const raceText = row.CreateFontString(undefined, 'OVERLAY', 'GameFontNormalSmall');
-        raceText.SetPoint('LEFT', row, 'LEFT', 60, 0);
+        raceText.SetPoint('LEFT', row, 'LEFT', 90, 0);
         raceText.SetText(getRaceName(outfit.race));
         raceText.SetJustifyH('LEFT');
-        raceText.SetWidth(100);
+        raceText.SetWidth(70);
 
         // Gender (column 3)
         const genderText = row.CreateFontString(undefined, 'OVERLAY', 'GameFontNormalSmall');
@@ -272,28 +272,52 @@ export function displaySavedOutfits() {
             savedToDBText.SetTextColor(1, 1, 0, 1); // Yellow
         }
 
-        // Load button
-        const loadBtn = CreateFrame('Button', undefined, row, 'UIPanelButtonTemplate');
-        loadBtn.SetSize(60, 20);
-        loadBtn.SetPoint('LEFT', row, 'LEFT', 325, 0);
-        loadBtn.SetText('Load');
-        
         // Capture outfit ID in closure
         const outfitId = outfit.id;
+        
+        // Load button
+        const loadBtn = CreateFrame('Button', undefined, row, 'UIPanelButtonTemplate');
+        loadBtn.SetSize(50, 20);
+        loadBtn.SetPoint('LEFT', row, 'LEFT', 320, 0);
+        loadBtn.SetText('Load');
         loadBtn.SetScript('OnClick', () => {
             const packet = new LoadOutfitMessage(outfitId);
             packet.write().Send();
         });
 
-        // Delete button
-        const deleteBtn = CreateFrame('Button', undefined, row, 'UIPanelButtonTemplate');
-        deleteBtn.SetSize(60, 20);
-        deleteBtn.SetPoint('LEFT', row, 'LEFT', 395, 0);
-        deleteBtn.SetText('Delete');
-        deleteBtn.SetScript('OnClick', () => {
-            const packet = new DeleteOutfitMessage(outfitId);
+        // Export button
+        const exportBtn = CreateFrame('Button', undefined, row, 'UIPanelButtonTemplate');
+        exportBtn.SetSize(50, 20);
+        exportBtn.SetPoint('LEFT', row, 'LEFT', 375, 0);
+        exportBtn.SetText('Export');
+        exportBtn.SetScript('OnClick', () => {
+            const packet = new ExportOutfitByIdMessage(outfitId);
             packet.write().Send();
         });
+
+        // Save button (only show if not saved to DB)
+        if (!outfit.savedToDB) {
+            const saveBtn = CreateFrame('Button', undefined, row, 'UIPanelButtonTemplate');
+            saveBtn.SetSize(50, 20);
+            saveBtn.SetPoint('LEFT', row, 'LEFT', 430, 0);
+            saveBtn.SetText('Save');
+            saveBtn.SetScript('OnClick', () => {
+                const packet = new SaveOutfitToDBMessage(outfitId);
+                packet.write().Send();
+            });
+        }
+
+        // Delete button (only show if not saved to DB)
+        if (!outfit.savedToDB) {
+            const deleteBtn = CreateFrame('Button', undefined, row, 'UIPanelButtonTemplate');
+            deleteBtn.SetSize(50, 20);
+            deleteBtn.SetPoint('LEFT', row, 'LEFT', 485, 0);
+            deleteBtn.SetText('Delete');
+            deleteBtn.SetScript('OnClick', () => {
+                const packet = new DeleteOutfitMessage(outfitId);
+                packet.write().Send();
+            });
+        }
 
         row.Show();
         addSavedOutfitsRow(row);

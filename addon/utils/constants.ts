@@ -1,0 +1,31 @@
+// Constants for Outfit Designer addon
+
+// Race ID to name mapping
+export const raceNames: {[key: number]: string} = {
+    1: 'Human',
+    2: 'Orc',
+    3: 'Dwarf',
+    4: 'Night Elf',
+    5: 'Undead',
+    6: 'Tauren',
+    7: 'Gnome',
+    8: 'Troll',
+    9: 'Goblin',
+    10: 'Blood Elf',
+    11: 'Draenei',
+    12: 'Fel Orc',
+    13: 'Naga',
+    14: 'Broken',
+    15: 'Skeleton',
+    16: 'Vrykul',
+    17: 'Tuskarr',
+    18: 'Forest Troll',
+    19: 'Taunka',
+    20: 'Northrend Skeleton',
+    21: 'Ice Troll'
+};
+
+export function getRaceName(raceId: number): string {
+    return raceNames[raceId] || 'Unknown';
+}
+
